@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MY Polls Page</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'js/bootstrap.min.js' %}">
+</head>
+<body>
+<div class="container my-5">
+    <h1>Poll : {{ poll_list.title }}คำถาม </h1>
+    {#        <p>{{ poll_list_questions  }}</p>#}
+    <form action="{% url 'poll_detail' poll.id%}" method="gets">
+        {% for question in poll.question_set.all %}
+            <div class="row">
+                <div class="col-6 border p-2">
+                    <p>{{ forloop.counter }} {{ question.text }}</p>
+
+                        {% for choice in question.choice_set.all %}
+    {#                        <li>{{ choice.text }}</li>#}
+                            <input type="radio" name={{ choice.question_id }} value={{ choice.value }}> {{ choice.text }}<br>
+                        {% endfor %}
+
+                </div>
+    {#            <div class="col-6"></div>#}
+            </div>
+            <br/>
+        {% endfor %}
+        <input  class="btn btn-outline-info" type="submit" value="บันทึก">
+        <a class="btn btn-danger" href="{% url 'index' %}">กลับหน้าแรก</a>
+    </form>
+
+</div>
+</body>
+</html>
