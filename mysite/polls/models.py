@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 class Poll(models.Model):
     title = models.CharField(max_length=100)
@@ -11,21 +10,19 @@ class Poll(models.Model):
     def __str__(self):
         return self.title
 
-
 class Question(models.Model):
-    text = models.TextField()
+    text  = models.TextField()
     SINGLE = '01'
     MULTIPLE = '02'
     TYPES = (
-        (SINGLE, 'Single answer'),
+        (SINGLE, ' Single answer'),
         (MULTIPLE, 'Multiple answer')
-    )
+        )
     type = models.CharField(max_length=2, choices=TYPES, default='01')
     poll = models.ForeignKey(Poll, on_delete=models.PROTECT)
 
     def __str__(self):
         return '(%s) %s' % (self.poll.title, self.text)
-
 
 class Choice(models.Model):
     text = models.CharField(max_length=100)
@@ -35,8 +32,34 @@ class Choice(models.Model):
     def __str__(self):
         return '(%s) %s' % (self.question.text, self.text)
 
-
 class Answer(models.Model):
     choice = models.OneToOneField(Choice, on_delete=models.PROTECT)
     question = models.ForeignKey(Question, on_delete=models.PROTECT)
 
+class Comment(models.Model):
+
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True, blank=True)
+
+    title = models.CharField(max_length=100)
+    body = models.TextField()
+    email = models.EmailField()
+    tel = models.CharField(max_length=10)
+
+class Profile(models.Model):
+    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+
+    line_id = models.CharField(max_length=100)
+    facebook = models.CharField(max_length=100)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    OTHER = 'X'
+    GENDERS = (
+        (MALE, 'ชาย'),
+        (FEMALE, 'หญิง'),
+        (OTHER, 'อื่นๆ')
+    )
+
+    gender = models.CharField(max_length=1, choices=GENDERS)
+
+    birthdate = models.DateField()

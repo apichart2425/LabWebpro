@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Poll</title>
+    <style>
+        .errorlist{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Create New Comment</h1>
+
+    <p>{{ form.non_field_errors }}</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <label>Title</label><br>
+        {{ form.title}}<br><br>
+        <label>Body</label><br>
+        {{ form.body}}<br><br>
+        <label>Email</label><br>
+        {{ form.email}}<br>
+        {{ form.email.errors }}<br>
+        <label>Moblie Number</label><br>
+        {{ form.tel}}<br><br>
+        {{ form.tel.errors }}
+        <input type="submit" value="save">
+    </form>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div class="container">
+        <form method="get" action="{% url 'poll_detail' poll.id %}">
+{#        {% csrf_token %}#}
+
+        <h1>Poll: {{ poll.title }} ({{ poll.question }} คำถาม)</h1>
+
+            <a href="{% url 'comment'  poll.id%}">เพิ่ม Comment</a>
+            <input type="submit" value="save">
+            <button type="button" class="btn btn-outline-danger"><a href="{% url 'index' %}">ย้อนกลับ</a></button>
+        <div class="row">
+            {% for question in poll.question_set.all %}
+                <div class="col-6 border" style="border-radius: 10px; margin: 2%">
+
+                    <b>{{ forloop.counter }}. {{ question.text }}</b><br>
+
+                    {% for choice in question.choice_set.all %}
+                        <input type="radio" name="choice{{question.id}}" value={{choice.id}}>
+                        &ensp;- {{ choice.text }} <br>
+                    {% endfor %}
+
+                </div>
+                <div class="col-6" ></div>
+            {% endfor %}
+        </div>
+
+        </form>
+    </div>
+
+</body>
+</html>

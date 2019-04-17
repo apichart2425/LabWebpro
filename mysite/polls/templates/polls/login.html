@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+</head>
+<body>
+<h1>LOGIN PAGE</h1>
+    <p>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <table border="1">
+                {% if error %}
+                    <tr>
+                        <td colspan="2">{{ error }}</td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>USERNAME:</th>
+                    <td><input type="text" name="username"></td>
+                </tr>
+                <tr>
+                    <th>PASSWORD:</th>
+                    <td><input type="password" name="password"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="hidden" name="next_url" value="{{ next_url }}">
+                        <input type="submit" value="LOGIN"></td>
+                </tr>
+            </table>
+        </form>
+    </p>
+</body>
+</html>

@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f*$1&&%0oq2x#k1v*+@he5z_a!^_ig#_g)&f2&8(v_%+24jys*'
+SECRET_KEY = '9*-5du+xqtua&)ifhs=xgxuzxst0d3p3!^xkp&=ybk6gt+8t0t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls',
+    'polls'
 ]
 
 MIDDLEWARE = [
@@ -75,21 +75,16 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-
-    'default':{
-        'ENGINE' : 'django.db.backends.mysql',
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'webpro',
-        'USER': 'apichart',
-        'PASSWORD' : '123456',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306'
+        'USER': 'root',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
+
     }
 }
-
 
 
 # Password validation
@@ -131,6 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'polls/static')
-
+    os.path.join((BASE_DIR), 'polls/static')
 ]
+
+LOGIN_URL = '/polls/login/'
