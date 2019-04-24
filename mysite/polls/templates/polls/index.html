@@ -18,7 +18,10 @@
                 <ol>
                     {% for poll in poll_list %}
                         <li> {{ poll.title }} ({{ poll.question_count }}คำถาม)
-                            {% if user.is_authenticated %} <a href="{% url 'poll_detail' poll_id=poll.id %}">- detail</a>{% endif %}</li>
+                            {% if user.is_authenticated %} <a href="{% url 'poll_detail' poll_id=poll.id %}">- detail</a>{% endif %}
+                        &ensp;
+                            <a href="{% url 'update_poll' poll.id %}">Update</a>
+                        </li>
                     {% endfor %}
 
                 </ol>

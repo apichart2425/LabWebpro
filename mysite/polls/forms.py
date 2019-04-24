@@ -2,7 +2,7 @@ from django import forms
 from django.core import validators
 from django.core.exceptions import ValidationError
 
-from .models import Profile,Poll,Question
+from .models import Profile,Poll,Question, Choice
 
 
 def validate_even(value):
@@ -113,15 +113,11 @@ class RegisterForm(forms.Form):
 
 
 class QuestionForm(forms.Form):
+    question_id = forms.IntegerField(required = False, widget=forms.HiddenInput)
     text = forms.CharField(widget=forms.Textarea)
     type = forms.ChoiceField(choices=Question.TYPES, initial='01')
 
 class PollModelForm(forms.ModelForm):
-    email = forms.CharField(validators=[validators.validate_email])
-    no_questions = forms.IntegerField(label="จำนวนคำถาม", min_value=0,
-                                      max_value=10,
-                                      required=True,
-                                      validators=[validate_even])
 
     class Meta:
         model = Poll
@@ -130,8 +126,8 @@ class PollModelForm(forms.ModelForm):
     def clean_title(self):
         data = self.cleaned_data['title']
 
-        if "ไอทีหมีแพนด้า" not in data:
-            raise forms.ValidationError("TEST")
+        # if "ไอทีหมีแพนด้า" not in data:
+        #     raise forms.ValidationError("TEST")
 
         return  data
 
@@ -147,3 +143,7 @@ class PollModelForm(forms.ModelForm):
             # raise forms.ValidationError('โปรดเลือกวันที่เริ่มต้น')
             self.add_error('start_date', 'โปรดเลือกวันที่สิ้นสุด')
 
+class ChoiceModelForm(forms.ModelForm):
+    class Meta:
+        medel = Choice
+        fields = '__all__'

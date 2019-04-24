@@ -1,0 +1,83 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <h2>Add choice(s) for {{ question }}</h2>
+    <h3 v-if="success">Create Successfully!</h3>
+    <table>
+        <tr>
+            <th>Choice Text</th>
+            <th>Choice Value</th>
+            <th>Delete</th>
+        </tr>
+        <tr v-for="choice in choices">
+            <td><input type="text" v-model="choice.text"></td>
+            <td><input type="text" v-model="choice.value"></td>
+            <td><input type="button" @click="deleteChoice(choice)" value="DEL"></td>
+        </tr>
+    </table>
+
+    <p><input type="button" @click="addChoice" value="ADD NEW CHOICE">
+        <input type="button" value="SAVE CHOICE"></p>
+    <p v-for="error in errorMsg">[[error]]</p>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'js/js.cookie.js' %}"></script>
+
+<script>
+    var csrftoken = Cookies.get('csrftoken');
+
+    var app = new Vue({
+        el: '#app'
+
+        {#el: '#app',#}
+        {#delimiters: ["[[","]]"],#}
+        {#data:{#}
+        {#    success: false,#}
+        {#    errorMsg: '',#}
+        {#    choices: []#}
+        {#},#}
+        {#method:{#}
+        {#    addChoice(){#}
+        {#        this.choices.push(#}
+        {#            {#}
+        {#                text: '',#}
+        {#                value: 0#}
+        {#            }#}
+        {#        )#}
+        {#    },#}
+        {#    deleteChoice(choice){#}
+        {#        let index = this.choices.indexOf(choice)#}
+        {#        this.choices.splice(index, 1)#}
+        {#    },#}
+        {#    submit(){#}
+        {#        console.log(this.choices)#}
+        {#        axios#}
+        {#            .post('http://localhost:8000/polls/api/' + {{ question.id }} + '/add-choice/',#}
+        {#            this.choices,#}
+        {#                {headers:{'X-CSRFTOKEN': csrftoken}})#}
+        {#            .then(response => {#}
+        {#                this.success = true#}
+        {#                this.errorMsg = response.data.no_choice#}
+        {#            })#}
+        {#            .catch(error => {#}
+        {#                console.log(error.response)#}
+        {#                this.errorMsg = error.response.data.message#}
+        {#            })#}
+        {#    }#}
+        {#}#}
+    })
+</script>
+
+</body>
+</html>
