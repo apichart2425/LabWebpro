@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Poll</title>
+</head>
+<body>
+<h1>Create New Poll</h1>
+
+<form method="post" action="{% url 'update_poll' poll_obj.id %}">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <p>a
+        {{ form.non_field_errors }}
+    </p>
+    {% endif %}
+    <table border = 1>
+        <tr>
+            <td><label id="{{ form.title.id_for_label }}">{{ form.title.label}}</label></td>
+            <td>{{ form.title.errors }} {{ form.title }}</td>
+            <td><label id="{{ form.no_questions.id_for_label }}">{{ form.no_questions.label}}</label></td>
+            <td>{{ form.no_questions.errors }}{{ form.no_questions }}</td>
+        </tr>
+        <tr>
+            <td><label id="{{ form.email.id_for_label }}">{{ form.email.label}}</label></td>
+            <td colspan="3">{{ form.email.errors }}{{ form.email }}</td>
+        </tr>
+        <tr>
+            <td><label id="{{ form.start_date.id_for_label }}">{{ form.start_date.label}}</label></td>
+            <td>{{ form.start_date.errors }}{{ form.start_date }}</td>
+            <td><label id="{{ form.end_date.id_for_label }}">{{ form.end_date.label}}</label></td>
+            <td>{{ form.end_date.errors }}{{ form.end_date }}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><input type="submit" value="UPDATE"></td>
+        </tr>
+    </table>
+
+</form>
+</body>
+</html>

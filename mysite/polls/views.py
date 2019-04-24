@@ -2,8 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.forms import formset_factory
 
-from .forms import PollForm,CommentForm, ChangePasswordForm, RegisterForm
+
+from .forms import PollForm,CommentForm, ChangePasswordForm, RegisterForm, PollModelForm, QuestionForm
 from .models import Poll, Question, Answer, Comment, Profile
 
 from django.contrib.auth.models import User
@@ -81,31 +83,69 @@ def detail(request, poll_id):
     print(request.GET)
     return  render(request, 'polls/question.html', {'poll': poll})
 
-
+# @login_required
+# @permission_required('polls.add_poll')
 def create(request):
+    
+    QuestionFormSet = formset_factory(QuestionForm , extra=2)
 
+    # this comment old code
     if request.method == 'POST':
-        form = PollForm(request.POST)
-        if form.is_valid():
-            poll = Poll.objects.create(
-                title=form.cleaned_data.get('title'),
-                start_date=form.cleaned_data.get('start_date'),
-                end_date=form.cleaned_data.get('end_date'),
-            )
+        # form = PollForm(request.POST)
+        context = {}
+        form = PollModelForm(request.POST)
+        formset = QuestionFormSet(request.POST)
 
-            for i in range(1, form.cleaned_data.get('no_questions')+1):
-                Question.objects.create(
-                    text='0000' + str(i),
-                    type='01',
-                    poll=poll
-                )
+        if form.is_valid():
+            poll = form.save()
+            if formset.is_valid():
+                for question_form in formset:
+                    Question.objects.create(
+                        text = question_form.cleaned_data.get('text'),
+                        type = question_form.cleaned_data.get('type'),
+                        poll = poll
+                    )
+                
+                context['success'] = "Poll %s is create successfully" % poll.title
+
+
+            # poll = Poll.objects.create(
+            #     title=form.cleaned_data.get('title'),
+            #     start_date=form.cleaned_data.get('start_date'),
+            #     end_date=form.cleaned_data.get('end_date'),
+            # )
+
+            # for i in range(1, form.cleaned_data.get('no_questions')+1):
+            #     Question.objects.create(
+            #         text='0000' + str(i),
+            #         type='01',
+            #         poll=poll
+            #     )
         # title = request.POST.get('title')
         # question_list = request.POST.getlist('questions[]')
     else:
-        form = PollForm()
+        form = PollModelForm()
+        formset = QuestionFormSet()
+        # form = PollForm()
 
-    context = {'form': form}
+    context['form'] = form,
+    context['formset'] = formset
     return render(request, 'polls/create.html', context=context)
+
+# @login_required
+# @permission_required('polls.change_poll')
+def update(request, poll_id):
+    poll = Poll.objects.get(id=poll_id)
+    # week 5 model form
+    if request.method == 'POST':
+        form = PollModelForm(request.POST, instance=poll)
+        if form.is_valid():
+            form.save()
+    else:
+        form = PollModelForm(instance=poll)
+
+    context = {'form': form, 'poll_obj': poll}
+    return render(request, 'polls/update.html', context=context)
 
 def comment(request, poll_id):
     if request.method == 'POST':
@@ -176,6 +216,8 @@ def my_register(request):
     context = {'form': form}
 
     return render(request,'polls/register.html', context=context)
+
+
 
 
 # poll_list = [

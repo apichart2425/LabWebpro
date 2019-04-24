@@ -11,5 +11,5 @@ urlpatterns = [
     path('detail/<int:poll_id>/comments/', views.comment, name='comment'),
     path('change_password/', views.changePassword, name='changepassword'),
     path('register/', views.my_register, name='register'),
-
+    path('update/<int:poll_id>', views.update, name='update_poll'),
 ]

@@ -7,9 +7,25 @@
 <body>
 <h1>Create New Poll</h1>
 
+    {% if success %}<p>{{ success }}</p>{% endif %}
 <form method="post" action="{% url 'create_poll' %}">
     {% csrf_token %}
-    {% if form.non_field_errors %}
+    <!-- code 1 -->
+    
+    {{ form.as_p}}
+    <hr></hr>
+    <h2>Add Question(s)</h2>
+
+    <table>
+        {{ formset }}
+    </table>
+    <p><input type="submit" value="CREATE"></p>
+</form>
+</body>
+</html>
+
+<!-- code 1  -->
+<!-- {% if form.non_field_errors %}
     <p>a
         {{ form.non_field_errors }}
     </p>
@@ -34,8 +50,4 @@
         <tr>
             <td colspan="4"><input type="submit" value="CREATE"></td>
         </tr>
-    </table>
-
-</form>
-</body>
-</html>
+    </table> -->
